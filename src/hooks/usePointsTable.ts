@@ -30,9 +30,31 @@ const usePointsTable = () => {
     }
   };
 
+  const getSortedData = (mapData = {}, order) => {
+    if (order) {
+      return Object.values(mapData)?.sort((a, b) => {
+        const scoreDiff = a.score - b.score;
+        if (scoreDiff === 0) {
+          return a.totalScore - b.totalScore;
+        } else {
+          return scoreDiff;
+        }
+      });
+    } else {
+      return Object.values(mapData)?.sort((a, b) => {
+        const scoreDiff = b.score - a.score;
+        if (scoreDiff === 0) {
+          return b.totalScore - a.totalScore;
+        } else {
+          return scoreDiff;
+        }
+      });
+    }
+  };
+
   // id, name, icon, score, matchesPlayed
 
-  const fetchPointsData = async () => {
+  const fetchPointsData = async (sort = 0) => {
     setLoading(true);
     const playerData = await fetchUserData();
     const matchData = await fetchMatchDetails();
@@ -61,16 +83,7 @@ const usePointsTable = () => {
 
     setPlayersData(playerMap);
 
-    const sortedPlayerData: PlayerDataProps[] = Object.values(playerMap)?.sort(
-      (a, b) => {
-        const scoreDiff = b.score - a.score;
-        if (scoreDiff === 0) {
-          return b.totalScore - a.totalScore;
-        } else {
-          return b.score - a.score;
-        }
-      },
-    );
+    const sortedPlayerData: PlayerDataProps[] = getSortedData(playerMap, sort);
 
     setPlayerMapData(sortedPlayerData);
     setLoading(false);

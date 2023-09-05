@@ -1,6 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
-import {View, ActivityIndicator, FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Button,
+  Pressable,
+  Text,
+} from 'react-native';
 import React, {useEffect} from 'react';
 import usePointsTable from '../hooks/usePointsTable';
 import PlayerCard from '../components/PlayerCard';
@@ -16,6 +24,14 @@ const PointsTable = () => {
   return (
     <View style={styles.table}>
       <PageHeader title="Points Table" />
+      <View>
+        <Pressable onPress={() => fetchPointsData(1)}>
+          <Text>Ascending Order</Text>
+        </Pressable>
+        <Pressable onPress={() => fetchPointsData()}>
+          <Text>Descending Order</Text>
+        </Pressable>
+      </View>
       {isLoading ? (
         <View style={styles.loader}>
           <ActivityIndicator size="large" color="#5670fb" />
